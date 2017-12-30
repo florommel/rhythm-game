@@ -1,0 +1,95 @@
+{
+  "title": "Main Challenge",
+  "levels": [
+    {
+      "title": "fourths",
+      "time_signature": "4/4",
+      "rhythm": "n4 n4 n4 n4",
+      "bpm": 100
+    },
+    {
+      "title": "fourths & eights",
+      "time_signature": "4/4",
+      "rhythm": "n4 n4 n8 n8b n4",
+      "bpm": 100
+    },
+    {
+      "title": "rest",
+      "time_signature": "4/4",
+      "rhythm": "n4 p4 n4 p4",
+      "bpm": 100
+    },
+    {
+      "title": "dotted",
+      "time_signature": "4/4",
+      "rhythm": "n4+ n8 n4 p4",
+      "bpm": 100
+    },
+    {
+      "title": "dotted 2",
+      "time_signature": "4/4",
+      "rhythm": "n8+ n16b n4 n8+ n16b n4",
+      "bpm": 100
+    },
+    {
+      "title": "rest 2",
+      "time_signature": "4/4",
+      "rhythm": "n4 p4 n4 n8 n8b",
+      "bpm": 100
+    },
+    {
+      "title": "offbeat",
+      "time_signature": "4/4",
+      "rhythm": "p8 n8 n4 p2",
+      "bpm": 100
+    },
+    {
+      "title": "offbeat 2",
+      "time_signature": "4/4",
+      "rhythm": "p8 n4 n8 n2",
+      "bpm": 100
+    },
+    {
+      "title": "triplets",
+      "time_signature": "4/4",
+      "rhythm": "n12 n12b n12b p4 n12 n12b n12b p4",
+      "bpm": 100
+    },
+    {
+      "title": "triplets 2",
+      "time_signature": "4/4",
+      "rhythm": " p8 n8 n12 n12b n12b p8 n8 n8 n8b",
+      "bpm": 100
+    },
+    {
+      "title": "triplets & eights",
+      "time_signature": "4/4",
+      "rhythm": "n12 n12b n12b n8 n8b n8 n8b p4",
+      "bpm": 100
+    },
+    {
+      "title": "offbeat 3",
+      "time_signature": "4/4",
+      "rhythm": "p8 n4 n4 n4 n8",
+      "bpm": 100
+    },
+    {
+      "title": "offbeat – onbeat",
+      "time_signature": "4/4",
+      "rhythm": "p8 n4 p8 n4 p8 n8",
+      "bpm": 100
+    },
+    {
+      "title": "triplets & offbeat",
+      "time_signature": "4/4",
+      "rhythm": "p8 n4 p8 n12 n12b n12b p8 n8",
+      "bpm": 100
+    },
+    {
+      "title": "swing",
+      "time_signature": "4/4",
+      "rhythm": "n4 n12 p12 n12 n4 n12 p12 n12",
+      "bpm": 100
+    }
+  ]
+}

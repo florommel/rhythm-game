@@ -1,0 +1,196 @@
+$notation-bar-margin: $big-space;
+
+.timer-view {
+    transition: opacity 2s, transform 1s;
+
+    .head {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        text-align: center;
+        margin: $notation-bar-margin 0;
+
+        .challenge-title {
+            font-size: 20px;
+            margin: 0 12px $notation-bar-margin 12px;
+            width: 100%;
+
+            span {
+                font-weight: normal;
+                font-style: italic;
+                margin-left: 5px;
+            }
+        }
+
+        .time-signature {
+            flex: 0 1 auto;
+            line-height: 85%;
+            font-size: 20px;
+            margin: 0 12px;
+        }
+
+        @media (min-width: ($min-s-width + $min-m-width) / 2) {
+            flex-wrap: nowrap;
+
+            .time-signature {
+                order: -1;
+            }
+
+            .challenge-title {
+                width: auto;
+                margin-bottom: 0;
+            }
+        }
+
+        .metronome-intro {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-content: flex-start;
+            align-items: center;
+            margin: 0 6px;
+
+            div {
+                border-radius: 50%;
+                background-color: black;
+                color: white;
+                opacity: 0.2;
+
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 14px;
+                margin: 0 4px;
+
+                &.intro-highlight {
+                    opacity: 1;
+                }
+            }
+        }
+
+        @media (min-width: $min-s-width) {
+            .time-signature {
+                font-size: 24px;
+            }
+
+            .metronome-intro {
+                div {
+                    width: 22px;
+                    height: 22px;
+                    line-height: 22px;
+                    font-size: 16px;
+                    margin: 0 6px;
+                }
+            }
+        }
+    }
+
+    .bar {
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        align-items: flex-start;
+        margin: $notation-bar-margin 0;
+        background: url("lin.svg") 0 56% repeat-x;
+        padding-left: 8px;
+
+        .group {
+            display: inline-flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+            order: 0;
+            flex: 0 1 auto;
+            align-self: auto;
+            min-width: 0;
+            margin-right: auto;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .item {
+            order: 0;
+            flex: 0 1 auto;
+            align-self: auto;
+            width: 30px;
+            height: auto;
+            margin-right: auto;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            @media (min-width: $min-s-width) {
+                width: 36px;
+            }
+
+            @media (min-width: $min-m-width) {
+                width: 40px;
+            }
+        }
+
+        .indicator-inner {
+            fill-opacity: 0.3;
+        }
+
+        .indicator-outer {
+            fill-opacity: 0;
+        }
+
+        .note-highlight .indicator-inner {
+            fill: #005dff;
+            fill-opacity: 1;
+        }
+
+        .note-highlight .indicator-outer {
+            fill: #0033fc;
+            fill-opacity:0.26;
+        }
+
+        .note-highlight-correct .indicator-inner {
+            fill: #009a29;
+            fill-opacity: 1;
+        }
+
+        .note-highlight-correct .indicator-outer {
+            fill: #0bd300;
+            fill-opacity:0.36;
+        }
+
+        .note-highlight-fail .indicator-inner {
+            fill: #d33f00;
+            fill-opacity: 1;
+        }
+
+        .note-highlight-fail .indicator-outer {
+            fill: #d35300;
+            fill-opacity: 0.36;
+        }
+
+        .flag {
+            position: absolute;
+            left: -18px;
+            top: -webkit-calc(56% - 7px);
+            top: -moz-calc(56% - 7px);
+            top: calc(56% - 7px);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-color: transparent transparent transparent rgba(0,0,0,0.3);
+            border-width: 7px 0 7px 14px;
+        }
+    }
+}

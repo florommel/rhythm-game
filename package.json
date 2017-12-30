@@ -1,0 +1,33 @@
+{
+  "name": "a-rhythm-game",
+  "version": "1.0.0",
+  "description": "A Rhythm Game",
+  "scripts": {
+    "build:html": "mkdir -p dist && cp -f src/index.html -t dist/",
+    "build:challenge": "mkdir -p dist && cp -f src/challenge.json -t dist/",
+    "build:js": "babel src/js -d dist",
+    "build:notation": "node src/notation/build.js > dist/notation.js",
+    "build:scss": "node-sass --output-style compressed -o dist src/scss/",
+    "build:media": "mkdir -p dist && cp -f src/media/* -t dist/",
+    "build:copying": "mkdir -p dist && cp -f COPYING -t dist/",
+    "build": "npm run build:html && npm run build:challenge && npm run build:js && npm run build:notation && npm run build:scss && npm run build:media && npm run build:copying",
+    "clean": "rm -rf dist",
+    "watch:html": "onchange 'src/index.html' -- npm run build:html",
+    "watch:challenge": "onchange 'src/challenge.json' -- npm run build:challenge",
+    "watch:js": "onchange 'src/js/*.js' -- npm run build:js",
+    "watch:notation": "onchange 'src/notation/notation.js' -- npm run build:notation",
+    "watch:scss": "onchange 'src/scss/*.scss' -- npm run build:scss",
+    "watch:media": "onchange 'src/media/*' -- npm run build:media",
+    "watch": "parallelshell \"npm run watch:html\" \"npm run watch:challenge\" \"npm run watch:js\" \"npm run watch:notation\" \"npm run watch:scss\" \"npm run watch:media\""
+  },
+  "author": "Florian Rommel",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "babel-cli": "^6.0.0",
+    "babel-preset-env": "^1.6.1",
+    "node-sass": "^4.7.2",
+    "onchange": "^3.2.1",
+    "parallelshell": "^3.0.2",
+    "xmldom": "^0.1.27"
+  }
+}
