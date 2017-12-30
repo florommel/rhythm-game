@@ -260,15 +260,12 @@ GameView.prototype.update_score = function(new_score) {
 }
 
 
-// `mode` either 'start', 'end', 'success' or 'fail'.
+// `mode` either 'start', 'success' or 'fail'.
 GameView.prototype.show_modal = function(mode, callback) {
   let main_text = null;
   switch (mode) {
   case "start":
     main_text = "Start Challenge";
-    break;
-  case "end":
-    main_text = "Challenge Completed";
     break;
   case "success":
     main_text = "Next Level";

@@ -39,7 +39,7 @@ function Game(challenge, game_view, sound_buffers) {
 
 
 Game.prototype.run = function() {
-  // `mode` either 'start', 'end', 'success' or 'fail'.
+  // `mode` either 'start', 'success' or 'fail'.
   let start_level = (mode) => {
     let timer_view = new TimerView();
     let level = this.challenge.levels[this.current_level_number-1];
