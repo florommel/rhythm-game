@@ -2,7 +2,7 @@
  * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
- * Copyright (C) 2017 Florian Rommel
+ * Copyright (C) 2017, 2018 Florian Rommel
  *
  * The JavaScript code in this page is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
@@ -25,6 +25,9 @@
 
 
 function rhythm_game_run() {
+  document.onselectstart = function() { return false; }
+  document.onmousedown = function() { return false; }
+
   Sound.load_raw_buffers()
     .then((sound_buffers) => {
       Challenge.load("challenge.json").then((challenge) => {
