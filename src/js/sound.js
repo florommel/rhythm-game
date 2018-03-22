@@ -23,6 +23,7 @@
  *
  */
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var Sound = {
   urls: {

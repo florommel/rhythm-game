@@ -2,7 +2,7 @@
  * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
- * Copyright (C) 2017 Florian Rommel
+ * Copyright (C) 2017, 2018 Florian Rommel
  *
  * The JavaScript code in this page is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
@@ -24,10 +24,9 @@
  */
 
 
-function Game(challenge, game_view, sound_buffers) {
+function Game(challenge, game_view) {
   this.challenge = challenge;
   this.game_view = game_view;
-  this.sound_buffers = sound_buffers;
   this.finished_callback = Function.prototype;  // NOP
   this.cancelled_callback = Function.prototype;  // NOP
   this.current_level_number = 0;
@@ -39,7 +38,8 @@ function Game(challenge, game_view, sound_buffers) {
 
 
 Game.prototype.run = function() {
-  // `mode` either 'start', 'success' or 'fail'.
+  // `mode` is either 'start', 'success' or 'fail'.
+  // It determines the level start meesage that is presented to the user.
   let start_level = (mode) => {
     let timer_view = new TimerView();
     let level = this.challenge.levels[this.current_level_number-1];
@@ -51,8 +51,7 @@ Game.prototype.run = function() {
     }
 
     let timer = new Timer(this.current_level_number, level.title,
-                          level.rhythm.time_signature, level.bpm, timer_view,
-                          this.sound_buffers);
+                          level.rhythm.time_signature, level.bpm, timer_view);
     timer.set_failed_callback(() => {
       start_level("fail");
     });
@@ -75,7 +74,8 @@ Game.prototype.run = function() {
         timer.start();
       });
     });
-  }
+  };
+
 
   this.current_level_number = 1;
   this.game_view.create_game_menu(this.max_score);

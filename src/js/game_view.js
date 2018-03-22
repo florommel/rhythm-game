@@ -2,7 +2,7 @@
  * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
- * Copyright (C) 2017 Florian Rommel
+ * Copyright (C) 2017, 2018 Florian Rommel
  *
  * The JavaScript code in this page is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
@@ -128,8 +128,7 @@ GameView.prototype.switch_result_view = function(score, max_score,
 
 
 // See also _view.css (.timer-view-container)
-GameView._flip_view = function(old_element, new_element,
-                               finished_callback) {
+GameView._flip_view = function(old_element, new_element, finished_callback) {
   let duration = 600;
 
   old_element.style.transform = "rotateY(0deg)";
@@ -153,16 +152,15 @@ GameView._flip_view = function(old_element, new_element,
       new_element.style.position = "static";
       new_element.style.zIndex = 0;
       old_element.remove();
-      finished_callback();
     }
   }
 
   window.requestAnimationFrame(step);
+  Controller.timeout.add(finished_callback, duration + 50);
 }
 
 
-GameView._shake_view = function(old_element, new_element,
-                                      finished_callback) {
+GameView._shake_view = function(old_element, new_element, finished_callback) {
   let duration = 600;
 
   old_element.remove();
@@ -179,11 +177,11 @@ GameView._shake_view = function(old_element, new_element,
       window.requestAnimationFrame(step);
     } else {
       new_element.style.transform = "none";
-      finished_callback();
     }
   }
 
   window.requestAnimationFrame(step);
+  Controller.timeout.add(finished_callback, duration + 50);
 }
 
 
@@ -207,22 +205,23 @@ GameView._intro_view = function(new_element, finished_callback) {
       window.requestAnimationFrame(step);
     } else {
       new_element.style.transform = "none";
-      finished_callback();
     }
   }
 
   window.requestAnimationFrame(step);
+  Controller.timeout.add(finished_callback, duration + 50);
 }
 
 
 GameView.prototype.create_game_menu = function(max_game_score) {
   let back_text = "Back to main menu";
-  let back_button = document.createElement("button");
+  let back_button = document.createElement("a");
   let back_image = document.createElement("img");
   back_image.setAttribute("src", "back.svg");
   back_image.setAttribute("alt", back_text);
   back_button.appendChild(back_image);
   back_button.setAttribute("title", back_text);
+  back_button.setAttribute("href", "#");
   this.game_menu.appendChild(back_button);
 
   let restart_text = "Restart whole challenge";
@@ -242,7 +241,7 @@ GameView.prototype.create_game_menu = function(max_game_score) {
 
   this.game_menu.style.opacity = 0;
   // see transition in _view.scss
-  window.setTimeout(() => {
+  Controller.timeout.add(() => {
     this.game_menu.removeAttribute("style");
   }, 500);
 }
@@ -255,7 +254,7 @@ GameView.prototype.update_score = function(new_score) {
     this.score_div.style.transform = "scale(15)";
     this.score_div.style.opacity = 0;
     this.score_div.style.transition = "none";
-    window.setTimeout(() => this.score_div.removeAttribute("style"), 100);
+    Controller.timeout.add(() => this.score_div.removeAttribute("style"), 100);
   }
 }
 
@@ -286,7 +285,7 @@ GameView.prototype.show_modal = function(mode, callback) {
   modal.appendChild(continue_div);
   this.game_view.appendChild(modal);
 
-  window.setTimeout(() => modal.removeAttribute("style"));
+  Controller.timeout.add(() => modal.removeAttribute("style"));
 
   let keydown_handler = (event) => {
     if (event.key == " " || event.key == "Enter") {
@@ -294,16 +293,13 @@ GameView.prototype.show_modal = function(mode, callback) {
     }
   };
   let handler = () => {
+    Controller.input.clear();
     callback();
-    window.removeEventListener("keydown", keydown_handler);
-    window.removeEventListener("touchstart", handler);
     modal.style.opacity = 0;
     modal.style.transform = "scale(2) translate(-25%, -25%)";
-    setTimeout(() => modal.remove(), 1000);
+    Controller.timeout.add(() => modal.remove(), 1000);
   };
-
-  window.addEventListener("keydown", keydown_handler);
-  window.addEventListener("touchstart", handler);
+  Controller.input.set(handler);
 }
 
 

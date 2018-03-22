@@ -1,3 +1,9 @@
+.menu {
+    .menu-challenge-entry {
+        display: block;
+    }
+}
+
 .game-menu {
     $game-menu-spacing: 5px;
 
@@ -18,7 +24,7 @@
         border-bottom: 0;
     }
 
-    button {
+    button, a {
         flex: 0 1 auto;
         align-self: stretch;
         border: 0;
