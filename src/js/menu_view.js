@@ -24,29 +24,27 @@
  */
 
 
-function MenuView(challenge_directory) {
+function MenuView(challenge_list) {
   this.container = document.createElement("div");
-  this.container.setAttribute("class", "row");
+  this.container.setAttribute("class", "menu row");
 
-  this.menu_container = document.createElement("div");
-  this.menu_container
-    .setAttribute("class", "xs-12 s-12 m-10 push-m-1 l-8 push-l-0");
-  this.menu_view = document.createElement("div");
-  this.menu_view.setAttribute("class", "menu");
-  this.menu_container.appendChild(this.menu_view);
+  let title = document.createElement("div");
+  title.setAttribute("class", "menu-title xs-12 m-10 push-m-1 l-8 push-l-2");
+  title.appendChild(document.createTextNode("A Rhythm Game"));
+  this.container.appendChild(title);
 
-  this.challenge_directory_view = document.createElement("div");
-  this.menu_view.appendChild(this.challenge_directory_view);
+  this.challenge_list_view = document.createElement("div");
+  this.challenge_list_view.setAttribute("class",
+      "menu-challenges xs-12 m-10 push-m-1 l-8 push-l-2 nested-row");
+  this.container.appendChild(this.challenge_list_view);
 
-  for (entry of challenge_directory) {
+  for (entry of challenge_list) {
     let entry_view = document.createElement("a");
-    entry_view.setAttribute("class", "menu-challenge-entry");
+    entry_view.setAttribute("class", "menu-challenge-entry xs-6 s-4 l-4");
     entry_view.setAttribute("href", "#" + entry.name);
     entry_view.appendChild(document.createTextNode(entry.title));
-    this.challenge_directory_view.appendChild(entry_view);
+    this.challenge_list_view.appendChild(entry_view);
   }
-
-  this.container.appendChild(this.menu_container);
 }
 
 

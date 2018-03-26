@@ -1,6 +1,29 @@
 .menu {
+    .menu-title {
+        @extend %top-margin-full;
+        @extend %bottom-margin-half;
+        font-size: 26px;
+        font-style: italic;
+
+        @media (min-width: $min-l-width) {
+            font-size: 30px;
+        }
+    }
+
     .menu-challenge-entry {
+        @extend %top-margin-half;
+        @extend %bottom-margin-half;
         display: block;
+        background-color: gray;
+        border-radius: 5px;
+        padding: 10px;
+        height: 100px;
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 

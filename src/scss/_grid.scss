@@ -18,7 +18,9 @@ $compat-spacing-double: 4 * $compat-spacing-half;
                         $sub-px: 0px, $sub-percent: 0%) {
     @for $i from 1 through 12 {
         .#{$prefix}-#{$i} {
-            @extend #{$extend};
+            @if $extend != null {
+                @extend #{$extend};
+            }
             $width: (100% / 12) * $i * $multi;
             @if $sub-percent != null {
                 #{$width-property}: $width - $sub-percent;
@@ -76,15 +78,6 @@ $compat-spacing-double: 4 * $compat-spacing-half;
     align-items: stretch;
 }
 
-.nested-row {
-    @extend .row;
-    padding: 0;
-    margin-left: -$compat-spacing-half;
-    margin-left: calc(-#{$xs-spacing-half});
-    width: 100% + $compat-spacing-full;
-    width: calc(100% + #{$xs-spacing-full});
-}
-
 .full {
     @extend %container;
     display: block;
@@ -122,6 +115,10 @@ $compat-spacing-double: 4 * $compat-spacing-half;
 .push-xs-0 { position: static; }
 .pull-xs-0 { position: static; }
 
+@for $i from 1 through 12 {
+    .nested-row.xs-#{$i} { width: (100% / 12) * $i; }
+}
+
 
 @media (min-width: $min-s-width) {
     %column-s { @include column-xs; }
@@ -134,6 +131,10 @@ $compat-spacing-double: 4 * $compat-spacing-half;
     @include for-column-width(pull-s, left, '%push-pull-column-s', -1);
     .push-s-0 { position: static; }
     .pull-s-0 { position: static; }
+
+    @for $i from 1 through 12 {
+        .nested-row.s-#{$i} { width: (100% / 12) * $i; }
+    }
 }
 
 
@@ -148,6 +149,10 @@ $compat-spacing-double: 4 * $compat-spacing-half;
     @include for-column-width(pull-m, left, '%push-pull-column-m', -1);
     .push-m-0 { position: static; }
     .pull-m-0 { position: static; }
+
+    @for $i from 1 through 12 {
+        .nested-row.m-#{$i} { width: (100% / 12) * $i; }
+    }
 }
 
 
@@ -162,11 +167,6 @@ $compat-spacing-double: 4 * $compat-spacing-half;
     %bottom-margin-double { margin-bottom: calc(#{$l-spacing-double}); }
     .full { padding: 0 calc(#{$l-spacing-full}); }
     .row { padding: 0 calc(#{$l-spacing-half}); }
-    .nested-row {
-        padding: 0;
-        margin-left: calc(-#{$l-spacing-half});
-        width: calc(100% + #{$l-spacing-full});
-    }
     .l-br { clear: left; }
     .l-nobr { clear: none; }
     @include for-column-width(xs, width, '%column-l', 1, $l-spacing-full, null);
@@ -178,6 +178,17 @@ $compat-spacing-double: 4 * $compat-spacing-half;
     @include for-column-width(pull-l, left, '%push-pull-column-l', -1);
     .push-l-0 { position: static; }
     .pull-l-0 { position: static; }
+
+    @for $i from 1 through 12 {
+        .nested-row.l-#{$i} { width: (100% / 12) * $i; }
+    }
+}
+
+
+.nested-row {
+    @extend .row;
+    padding: 0;
+    margin: 0;
 }
 
 

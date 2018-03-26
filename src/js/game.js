@@ -78,6 +78,11 @@ Game.prototype.run = function() {
 
 
   this.current_level_number = 1;
-  this.game_view.create_game_menu(this.max_score);
+  this.game_view.create_game_menu(this.max_score, () => this.restart());
   start_level("start");
-}
+};
+
+
+Game.prototype.restart = function() {
+  router();
+};

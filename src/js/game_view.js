@@ -213,7 +213,7 @@ GameView._intro_view = function(new_element, finished_callback) {
 }
 
 
-GameView.prototype.create_game_menu = function(max_game_score) {
+GameView.prototype.create_game_menu = function(max_game_score, restart) {
   let back_text = "Back to main menu";
   let back_button = document.createElement("a");
   let back_image = document.createElement("img");
@@ -231,6 +231,7 @@ GameView.prototype.create_game_menu = function(max_game_score) {
   restart_image.setAttribute("alt", restart_text);
   restart_button.appendChild(restart_image);
   restart_button.setAttribute("title", restart_text);
+  restart_button.addEventListener("click", restart);
   this.game_menu.appendChild(restart_button);
 
   let score_container = document.createElement("div");
