@@ -39,7 +39,7 @@ function Game(challenge, game_view) {
 
 Game.prototype.run = function() {
   // `mode` is either 'start', 'success' or 'fail'.
-  // It determines the level start meesage that is presented to the user.
+  // It determines the level start message that is presented to the user.
   let start_level = (mode) => {
     let timer_view = new TimerView();
     let level = this.challenge.levels[this.current_level_number-1];
@@ -66,6 +66,8 @@ Game.prototype.run = function() {
       }
     });
 
+    // TODO: Rhythms shouldn't be always played.  More advanced levels could be
+    //       without playing the rhythm before listening to it.
     timer.queue_play(level.rhythm);
     timer.queue_listen(level.rhythm);
 

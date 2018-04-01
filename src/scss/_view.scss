@@ -1,28 +1,39 @@
 .menu {
+    transition-duration: 500ms;
+
     .menu-title {
         @extend %top-margin-full;
-        @extend %bottom-margin-half;
-        font-size: 26px;
+        @extend %bottom-margin-full;
+        font-size: 30px;
+        text-shadow: 0px 2px 1px #bef1ff;
         font-style: italic;
 
         @media (min-width: $min-l-width) {
-            font-size: 30px;
+            font-size: 36px;
         }
+    }
+
+    .menu-item {
+        @extend %top-margin-full;
+        @extend %bottom-margin-half;
     }
 
     .menu-challenge-entry {
         @extend %top-margin-half;
         @extend %bottom-margin-half;
         display: block;
-        background-color: gray;
+        background-color: rgba(0, 156, 255, 0.4);
         border-radius: 5px;
+        border-bottom: 3px solid blue;
         padding: 10px;
-        height: 100px;
-        color: white;
+        height: 110px;
+        color: black;
         text-decoration: none;
+        font-size: 20px;
+        transition-duration: 300ms;
 
         &:hover {
-            text-decoration: underline;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
         }
     }
 }

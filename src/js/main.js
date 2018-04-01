@@ -24,52 +24,56 @@
  */
 
 
-var rhythm_config = {
-  challenges: [
-    { name: "challenge", title: "Main Challenge", difficulty: 3 },
-    { name: "test1", title: "Test Challenge 1", difficulty: 3 },
-    { name: "test2", title: "Test Challenge 2", difficulty: 3 },
-    { name: "test3", title: "Test Challenge 3", difficulty: 3 },
-    { name: "test4", title: "Test Challenge 4", difficulty: 3 },
-    { name: "test5", title: "Test Challenge 5", difficulty: 3 },
-    { name: "test6", title: "Test Challenge 6", difficulty: 3 },
-    { name: "test7", title: "Test Challenge 7", difficulty: 3 },
-    { name: "test8", title: "Test Challenge 8", difficulty: 3 },
-    { name: "test9", title: "Test Challenge 9", difficulty: 3 },
-    { name: "phantom", title: "Phantom", difficulty: 10 }
-  ]
-};
-
-
 function rhythm_game_run() {
   document.onselectstart = function() { return false; }
   document.onmousedown = function() { return false; }
 
   Controller.init().then(() => {
-    window.addEventListener("hashchange", router);
-    router();
+    load_challenge_index().then((challenge_index) => {
+      let router = get_router(challenge_index);
+      window.addEventListener("hashchange", router);
+      router();
+    }).catch((err) => console.log(err));
   }).catch((err) => console.log(err));
 }
 
 
-function router() {
-  let route = location.hash.slice(1);
+function get_router(challenge_index) {
+  return () => {
+    let route = location.hash.slice(1);
 
-  document.getElementById("rhythm-game").innerHTML = "";
-  Controller.clear_all();
+    document.getElementById("rhythm-game").innerHTML = "";
+    Controller.clear_all();
 
-  if (route == '') {
-    let menu_view = new MenuView(rhythm_config.challenges);
-    document.getElementById("rhythm-game")
-      .appendChild(menu_view.get_element());
-
-  } else {
-    Challenge.load(`${route}.json`).then((challenge) => {
-      let game_view = new GameView();
-      let game = new Game(challenge, game_view);
+    if (route == '') {
+      let menu_view = new MenuView(challenge_index);
       document.getElementById("rhythm-game")
-        .appendChild(game_view.get_element());
-      game.run();
-    }).catch((err) => console.log(err));
+        .appendChild(menu_view.get_element());
+
+    } else {
+      Challenge.load(`challenges/${route}.json`).then((challenge) => {
+        let game_view = new GameView();
+        let game = new Game(challenge, game_view);
+        document.getElementById("rhythm-game")
+          .appendChild(game_view.get_element());
+        game.run();
+      }).catch((err) => console.log(err));
+    }
   }
+}
+
+
+function load_challenge_index() {
+  return new Promise((resolve, reject) => {
+    let request = new XMLHttpRequest();
+    request.open("GET", "challenge_index.json", true);
+    request.responseType = "json";
+    request.onload = () => {
+      resolve(request.response);
+    }
+    request.onerror = () => {
+      reject(new Error("Error while loading 'challenge_index.json'."));
+    }
+    request.send();
+  });
 }

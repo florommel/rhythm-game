@@ -1,0 +1,12 @@
+{
+  "title": "Another Challenge",
+  "difficulty": 2,
+  "levels": [
+    {
+      "title": "fourths",
+      "time_signature": "4/4",
+      "rhythm": "n4 n4 n4 n4",
+      "bpm": 100
+    }
+  ]
+}

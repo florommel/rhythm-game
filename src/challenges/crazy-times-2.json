@@ -1,0 +1,12 @@
+{
+  "title": "Crazy Times 2",
+  "difficulty": 3,
+  "levels": [
+    {
+      "title": "fourths",
+      "time_signature": "7/4",
+      "rhythm": "n4 n4 n4 n4 n4 n4 n4",
+      "bpm": 150
+    }
+  ]
+}

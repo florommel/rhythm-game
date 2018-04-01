@@ -1,5 +1,6 @@
 {
-  "title": "Main Challenge",
+  "title": "Example Challenge",
+  "difficulty": 1,
   "levels": [
     {
       "title": "fourths",
