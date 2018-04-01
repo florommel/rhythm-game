@@ -5,8 +5,8 @@
   "scripts": {
     "build:html": "mkdir -p dist && cp -f src/index.html -t dist/",
     "build:challenges": "mkdir -p dist && node src/challenges/build_index.js > dist/challenge_index.json && mkdir -p dist/challenges && cp -f src/challenges/*.json -t dist/challenges/",
-    "build:js": "babel src/js -d dist",
-    "build:notation": "node src/notation/build.js > dist/notation.js",
+    "build:js": "babel src/js --no-comments | cat src/license-header.txt - > dist/script.js",
+    "build:notation": "node src/notation/build.js | cat src/license-header.txt - > dist/notation.js",
     "build:scss": "node-sass --output-style compressed -o dist src/scss/",
     "build:media": "mkdir -p dist && cp -f src/media/* -t dist/",
     "build:copying": "mkdir -p dist && cp -f COPYING -t dist/",
