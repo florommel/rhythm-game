@@ -19,21 +19,31 @@
 
 function MenuView(challenge_list) {
   this.container = document.createElement("div");
-  this.container.setAttribute("class", "menu row");
+  this.container.setAttribute("class", "menu");
   this.container.style.transform = "scale(0.6)";
   this.container.style.opacity = 0;
   this.container.style.transition = "none";
   Controller.timeout.add(() => this.container.removeAttribute("style"), 100);
 
+  let row0 = document.createElement("div");
+  let row1 = document.createElement("div");
+  let row2 = document.createElement("div");
+  row0.setAttribute("class", "row");
+  row1.setAttribute("class", "row");
+  row2.setAttribute("class", "row");
+  this.container.appendChild(row0);
+  this.container.appendChild(row1);
+  this.container.appendChild(row2);
+
   let title = document.createElement("div");
   title.setAttribute("class", "menu-title xs-12 m-10 push-m-1 l-8 push-l-2");
   title.appendChild(document.createTextNode("A Rhythm Game"));
-  this.container.appendChild(title);
+  row0.appendChild(title);
 
   this.challenge_list_view = document.createElement("div");
   this.challenge_list_view.setAttribute("class",
       "menu-challenges xs-12 m-10 push-m-1 l-8 push-l-2 nested-row");
-  this.container.appendChild(this.challenge_list_view);
+  row1.appendChild(this.challenge_list_view);
 
   for (entry of challenge_list) {
     let entry_view = document.createElement("a");
@@ -48,10 +58,16 @@ function MenuView(challenge_list) {
     this.challenge_list_view.appendChild(entry_view);
   }
 
-  let about = document.createElement("div");
-  about.setAttribute("class", "menu-item xs-12 m-10 push-m-1 l-8 push-l-2");
+  let about = document.createElement("a");
+  about.setAttribute("class", "menu-item xs-6 m-5 push-m-1 l-4 push-l-2");
+  about.setAttribute("href", "about");
   about.appendChild(document.createTextNode("About"));
-  this.container.appendChild(about);
+  row2.appendChild(about);
+  let imprint = document.createElement("a");
+  imprint.setAttribute("class", "menu-item xs-6 m-5 push-m-1 l-4 push-l-2");
+  imprint.setAttribute("href", "imprint");
+  imprint.appendChild(document.createTextNode("Imprint"));
+  row2.appendChild(imprint);
 }
 
 

@@ -5,7 +5,7 @@
         @extend %top-margin-full;
         @extend %bottom-margin-full;
         font-size: 30px;
-        text-shadow: 0px 2px 1px #bef1ff;
+        text-shadow: 0px 2px 0px #bef1ff;
         font-style: italic;
 
         @media (min-width: $min-l-width) {
@@ -13,25 +13,33 @@
         }
     }
 
+    %menu-tile {
+        display: block;
+        border-radius: 5px;
+        padding: 10px;
+        transition-duration: 300ms;
+        text-decoration: none;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-bottom: 3px solid rgba(0, 0, 0, 0.15);
+        color: rgba(0, 0, 0, 0.3);
+    }
+
     .menu-item {
+        @extend %menu-tile;
         @extend %top-margin-full;
         @extend %bottom-margin-half;
+        text-align: center;
+        &:hover {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
     }
 
     .menu-challenge-entry {
+        @extend %menu-tile;
         @extend %top-margin-half;
         @extend %bottom-margin-half;
-        display: block;
-        background-color: rgba(0, 156, 255, 0.4);
-        border-radius: 5px;
-        border-bottom: 3px solid blue;
-        padding: 10px;
         height: 110px;
-        color: black;
-        text-decoration: none;
         font-size: 20px;
-        transition-duration: 300ms;
-
         &:hover {
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
         }
