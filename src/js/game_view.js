@@ -279,13 +279,6 @@ GameView.prototype.show_modal = function(mode, callback) {
   modal.appendChild(continue_div);
   this.game_view.appendChild(modal);
 
-  Controller.timeout.add(() => modal.removeAttribute("style"));
-
-  let keydown_handler = (event) => {
-    if (event.key == " " || event.key == "Enter") {
-      handler();
-    }
-  };
   let handler = () => {
     Controller.input.clear();
     callback();
@@ -294,6 +287,7 @@ GameView.prototype.show_modal = function(mode, callback) {
     Controller.timeout.add(() => modal.remove(), 1000);
   };
   Controller.input.set(handler);
+  Controller.timeout.add(() => modal.removeAttribute("style"));
 }
 
 

@@ -32,7 +32,7 @@ function rhythm_game_run() {
 
 
 function get_router(challenge_index) {
-  return () => {
+  let router = () => {
     let route = location.hash.slice(1);
 
     document.getElementById("rhythm-game").innerHTML = "";
@@ -46,13 +46,14 @@ function get_router(challenge_index) {
     } else {
       Challenge.load(`challenges/${route}.json`).then((challenge) => {
         let game_view = new GameView();
-        let game = new Game(challenge, game_view);
+        let game = new Game(router, challenge, game_view);
         document.getElementById("rhythm-game")
           .appendChild(game_view.get_element());
         game.run();
       }).catch((err) => console.log(err));
     }
-  }
+  };
+  return router;
 }
 
 

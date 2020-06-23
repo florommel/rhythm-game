@@ -17,7 +17,8 @@
  *
  */
 
-function Game(challenge, game_view) {
+function Game(router, challenge, game_view) {
+  this.router = router;
   this.challenge = challenge;
   this.game_view = game_view;
   this.finished_callback = Function.prototype;  // NOP
@@ -79,5 +80,5 @@ Game.prototype.run = function() {
 
 
 Game.prototype.restart = function() {
-  router();
+  this.router();
 };
