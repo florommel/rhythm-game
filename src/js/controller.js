@@ -98,7 +98,10 @@ Controller.sound.get = function() {
           this.context.resume();
         },
         close: function() {
-          this.context.close();
+          if (this.context) {
+            this.context.close();
+            this.context = null;
+          }
         }
       };
       return this._current;
