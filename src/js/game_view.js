@@ -21,27 +21,22 @@ function GameView() {
   this.timer_view = null;
 
   this.container = document.createElement("div");
-  this.container.setAttribute("class", "row");
+  this.container.setAttribute("class", "game-container");
 
-  this.game_container = document.createElement("div");
-  this.game_container
-    .setAttribute("class", "xs-12 s-12 m-10 push-m-1 l-8 push-l-0");
   this.game_view = document.createElement("div");
   this.game_view.setAttribute("class", "game-view");
-  this.game_container.appendChild(this.game_view);
 
   this.timer_view_container = document.createElement("div");
   this.timer_view_container.setAttribute("class", "timer-view-container");
   this.game_view.appendChild(this.timer_view_container);
 
   this.game_menu = document.createElement("div");
-  this.game_menu
-    .setAttribute("class", "game-menu xs-12 s-12 m-10 push-m-1 l-2 push-l-0");
+  this.game_menu.setAttribute("class", "game-menu");
   this.score_div = document.createElement("div");
   this.score_div.setAttribute("class", "curr-score");
 
   this.container.appendChild(this.game_menu);
-  this.container.appendChild(this.game_container);
+  this.container.appendChild(this.game_view);
 }
 
 
@@ -59,7 +54,11 @@ GameView.prototype.switch_timer_view = function(new_timer_view,
     this.timer_view = null;
   }
 
-  this.timer_view_container.appendChild(new_timer_view.get_element());
+  new_timer_view.get_screen_height = () => {
+    return this.container.clientHeight - this.game_view.offsetTop;
+  }
+
+  // this.timer_view_container.appendChild(new_timer_view.get_element());
   this.timer_view = new_timer_view;
 
   let new_element = new_timer_view.get_element();
@@ -77,7 +76,7 @@ GameView.prototype.switch_timer_view = function(new_timer_view,
       GameView._shake_view(old_element, new_element, finish)
     }
   } else {
-    GameView._intro_view(new_element, finish);
+    GameView._intro_view(this.timer_view_container, new_element, finish);
   }
 }
 
@@ -114,7 +113,6 @@ GameView.prototype.switch_result_view = function(score, max_score,
   result_view.appendChild(document.createElement("br"));
   result_view.appendChild(continue_text);
   result_view.style.background = `hsla(${fract}, 100%, 50%, 0.4)`;
-  this.timer_view_container.appendChild(result_view);
   GameView._flip_view(old_timer_view.get_element(), result_view,
                       finished_callback);
 }
@@ -123,7 +121,7 @@ GameView.prototype.switch_result_view = function(score, max_score,
 // See also _view.css (.timer-view-container)
 GameView._flip_view = function(old_element, new_element, finished_callback) {
   let duration = 600;
-
+  old_element.parentElement.appendChild(new_element);
   old_element.style.transform = "rotateY(0deg)";
   new_element.style.transform = "rotateY(180deg)";
   old_element.style.position = "absolute";
@@ -154,32 +152,34 @@ GameView._flip_view = function(old_element, new_element, finished_callback) {
 
 
 GameView._shake_view = function(old_element, new_element, finished_callback) {
-  let duration = 600;
-
-  old_element.remove();
-
+  let duration = 800;
   let start = null;
   let step = (timestamp) => {
     if (!start)
       start = timestamp;
     let progress = timestamp - start;
     if (progress < duration) {
-      let step_inc = progress / duration * Math.PI * 8;
+      let step_inc = progress / duration * Math.PI * 12;
       let step_deg = Math.sin(step_inc) * 4;
-      new_element.style.transform = `rotate(${step_deg}deg)`;
+      old_element.style.transform = `rotate(${step_deg}deg)`;
       window.requestAnimationFrame(step);
     } else {
-      new_element.style.transform = "none";
+      old_element.style.transform = "none";
+      old_element.parentElement.appendChild(new_element);
+      new_element.style.top = old_element.style.top;
+      old_element.remove();
     }
   }
 
   window.requestAnimationFrame(step);
   Controller.timeout.add(finished_callback, duration + 50);
+  Controller.timeout.add(() => new_element.style.top = 0, duration + 400);
 }
 
 
-GameView._intro_view = function(new_element, finished_callback) {
+GameView._intro_view = function(container, new_element, finished_callback) {
   let duration = 400;
+  container.appendChild(new_element);
   new_element.style.transform = "rotateY(20deg) scale(1.5)";
   new_element.style.opacity = 0;
 

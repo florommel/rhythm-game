@@ -2,8 +2,6 @@
     transition-duration: 500ms;
 
     .menu-title {
-        @extend %top-margin-full;
-        @extend %bottom-margin-full;
         font-size: 30px;
         text-shadow: 0px 2px 0px #bef1ff;
         font-style: italic;
@@ -26,8 +24,6 @@
 
     .menu-item {
         @extend %menu-tile;
-        @extend %top-margin-full;
-        @extend %bottom-margin-half;
         text-align: center;
         &:hover {
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -36,8 +32,6 @@
 
     .menu-challenge-entry {
         @extend %menu-tile;
-        @extend %top-margin-half;
-        @extend %bottom-margin-half;
         height: 110px;
         font-size: 20px;
         &:hover {
@@ -46,140 +40,177 @@
     }
 }
 
-.game-menu {
-    $game-menu-spacing: 5px;
-
+.game-container {
+    height: 100%;
+    overflow: hidden;
     display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
-    align-content: stretch;
-    align-items: flex-start;
-    justify-content: space-around;
-    flex-direction: row;
-    padding: 0;
-    transition: opacity 1s;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    align-items: center;
 
     @media (min-width: $min-l-width) {
-        justify-content: flex-start;
-        flex-direction: column;
-        padding: $big-space;
-        border-bottom: 0;
-    }
-
-    button, a {
-        flex: 0 1 auto;
-        align-self: stretch;
-        border: 0;
-        padding: 0;
-        border: 0;
-        background: none;
-
-        &::-moz-focus-inner {
-            border: 0;
-        }
-        &:focus {
-            outline: 0;
-            border: 0;
-            img {
-                opacity: 0.3;
-            }
-        }
-        &:hover {
-            img {
-                opacity: 0.4;
-            }
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-            opacity: 0.1;
-            transition: opacity 200ms;
-        }
-    }
-
-    .score {
-        flex: 0 1 auto;
-        align-self: stretch;
-        padding: 7px 0;
-        min-width: 50px;
-        margin: 14px 8px 16px 8px;
-        background-color: rgba(0,0,0,0.1);
-        color: rgba(0,0,0,0.6);
-        border-radius: 5px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+        align-items: flex-start;
         justify-content: center;
+        flex-direction: row;
+    }
+
+    .game-menu {
+        flex: 0 0 auto;
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
         align-items: center;
+        justify-content: space-around;
+        justify-content: space-evenly;
+        flex-direction: row;
+        padding: 0;
+        transition: opacity 1s;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
 
-        .curr-score {
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            transition: transform 500ms, opacity 1000ms;
-            transition-timing-function: ease-in;
-        }
-    }
-}
-
-
-.game-view {
-    position: relative;
-
-    .modal {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        max-width: 60%;
-        transform: translate(-50%, -50%);
-        transition: opacity 400ms, transform 400ms;
-        background: rgba(0, 0, 0, 0.75);
-        color: white;
-        border-radius: 5px;
-        padding: 16px;
-        font-size: 30px;
-        text-align: center;
-
-        div {
-            font-style: italic;
-            font-size: 16px;
-        }
-    }
-
-    .timer-view-container {
-        position: relative;
-        perspective: 1000px;
-
-        .timer-view, .result-view {
-            transition: none;
-            backface-visibility: hidden;
-            -moz-backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            width: 100%;
-            top: 0;
-            left: 0;
-            transform-style: preserve-3d;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
+        background: white;
+        z-index: 10;
+        @supports (backdrop-filter: blur(10px)) {
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.80);
         }
 
-        .result-view {
-            font-size: 20px;
-            line-height: 250%;
-            padding: $big-space;
-            text-align: center;
-            background: rgba(0,0,0,0.1);
-            border-bottom: 3px solid rgba(0,0,0,0.1);
-            border-radius: 0 0 25px 25px;
+        @media (min-width: $min-l-width) {
+            backdrop-filter: none;
+            background: none;
+            align-items: flex-start;
+            justify-content: center;
+            align-content: stretch;
+            flex-direction: column;
+            border-bottom: 0;
+        }
 
-            .big {
-                font-size: 160%;
+        button, a {
+            flex: 0 1 auto;
+            align-self: stretch;
+            border: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+
+            &::-moz-focus-inner {
+                border: 0;
+            }
+            &:focus {
+                outline: 0;
+                border: 0;
+                img {
+                    opacity: 0.3;
+                }
+            }
+            &:hover {
+                img {
+                    opacity: 0.4;
+                }
             }
 
-            .it {
+            img {
+                width: 100%;
+                height: auto;
+                opacity: 0.1;
+                transition: opacity 200ms;
+            }
+        }
+
+        .score {
+            flex: 0 1 auto;
+            align-self: stretch;
+            padding: 7px 0;
+            min-width: 50px;
+            margin: 14px 8px 16px 8px;
+            background-color: rgba(0,0,0,0.1);
+            color: rgba(0,0,0,0.6);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+
+            .curr-score {
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+                transition: transform 500ms, opacity 1000ms;
+                transition-timing-function: ease-in;
+            }
+        }
+    }
+
+    @media (min-width: $min-l-width) {
+        &::after {
+            content: "";
+        }
+        .game-menu, &::after {
+            width: 80px;
+            padding: $big-space;
+        }
+    }
+
+    .game-view {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: $notation-width;
+        padding: 0 20px;
+        position: relative;
+
+        .modal {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            max-width: 60%;
+            transform: translate(-50%, -50%);
+            transition: opacity 400ms, transform 400ms;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            border-radius: 5px;
+            padding: 16px;
+            font-size: 30px;
+            text-align: center;
+
+            div {
                 font-style: italic;
+                font-size: 16px;
+            }
+        }
+
+        .timer-view-container {
+            position: relative;
+            perspective: 1000px;
+
+            .timer-view, .result-view {
+                backface-visibility: hidden;
+                -moz-backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+                width: 100%;
+                top: 0;
+                left: 0;
+                transform-style: preserve-3d;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            .result-view {
+                font-size: 20px;
+                line-height: 250%;
+                padding: $big-space;
+                text-align: center;
+                background: rgba(0,0,0,0.1);
+                border-bottom: 3px solid rgba(0,0,0,0.1);
+                border-radius: 0 0 25px 25px;
+
+                .big {
+                    font-size: 160%;
+                }
+
+                .it {
+                    font-style: italic;
+                }
             }
         }
     }

@@ -1,7 +1,8 @@
 $notation-bar-margin: $big-space;
 
 .timer-view {
-    transition: opacity 2s, transform 1s;
+    position: relative;
+    transition: top 1s;
 
     .head {
         display: flex;
@@ -12,7 +13,7 @@ $notation-bar-margin: $big-space;
         align-items: center;
         font-weight: bold;
         text-align: center;
-        margin: $notation-bar-margin 0;
+        padding-top: $notation-bar-margin;
 
         .challenge-title {
             font-size: 20px;
@@ -33,7 +34,7 @@ $notation-bar-margin: $big-space;
             margin: 0 12px;
         }
 
-        @media (min-width: ($min-s-width + $min-m-width) / 2) {
+        @media (min-width: $notation-width) {
             flex-wrap: nowrap;
 
             .time-signature {
@@ -137,7 +138,7 @@ $notation-bar-margin: $big-space;
                 width: 36px;
             }
 
-            @media (min-width: $min-m-width) {
+            @media (min-width: $notation-width) {
                 width: 40px;
             }
         }

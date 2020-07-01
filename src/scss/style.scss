@@ -1,11 +1,24 @@
 $big-space: 30px;
 
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     margin: 0;
     font-family: "DejaVu Serif", "Bitstream Vera Serif", "Georgia", "Droid Serif", serif;
 }
 
-@import '_grid';
+#rhythm-game {
+    height: 100%;
+}
+
+//@import '_grid';
+$min-s-width: 460px;
+$min-m-width: 660px;
+$min-l-width: 900px;
+$notation-width: (($min-s-width + $min-m-width) / 2);
 
 @import '_view';
 @import '_notation';

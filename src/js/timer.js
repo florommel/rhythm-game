@@ -150,8 +150,11 @@ Timer.prototype.start = function() {
     while (next_metronome_time < schedule.end - 0.001) {
       if (beat_countdown == 0) {
         sound.play_m1(next_metronome_time);
+        let tmp_bar_count = bar_count;
+        Controller.timeout.add(() => this.timer_view._focus_bar(tmp_bar_count),
+                               (next_metronome_time - sound.time()) * 1000);
         beat_countdown = this.time_signature.num - 1;
-        bar_count++;
+        bar_count = bar_count + 1;
       } else {
         sound.play_m2(next_metronome_time);
         beat_countdown--;

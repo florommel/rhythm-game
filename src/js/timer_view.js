@@ -24,6 +24,7 @@ function TimerView() {
   this.metronome_intro_index = 0;
   this.container = document.createElement("div");
   this.container.setAttribute("class", "timer-view");
+  this.get_screen_height = null; // will be set by GameView
 }
 
 
@@ -46,7 +47,6 @@ TimerView.prototype.metronome_intro_tick = function() {
   if (this.metronome_intro_index < this.metronome_intro_elements.length) {
     let e = this.metronome_intro_elements[this.metronome_intro_index++];
     e.setAttribute("class", "intro-highlight");
-    this._view_center(e.parentElement);
   }
 }
 
@@ -56,7 +56,6 @@ TimerView.prototype.highlight_next = function() {
     let e = this.note_elements[this.note_highlight_index];
     e.setAttribute("class", e.getAttribute("class") + " note-highlight");
     this.note_highlight_index++;
-    this._view_center(e.parentElement);
   }
 }
 
@@ -66,7 +65,6 @@ TimerView.prototype.highlight_next_correct = function() {
     let e = this.note_elements[this.note_highlight_index];
     e.setAttribute("class", e.getAttribute("class") + " note-highlight-correct");
     this.note_highlight_index++;
-    this._view_center(e.parentElement);
   }
 }
 
@@ -76,13 +74,23 @@ TimerView.prototype.highlight_next_fail = function() {
     let e = this.note_elements[this.note_highlight_index];
     e.setAttribute("class", e.getAttribute("class") + " note-highlight-fail");
     this.note_highlight_index++;
-    this._view_center(e.parentElement);
   }
 }
 
 
-TimerView.prototype._view_center = function(element) {
-  element.scrollIntoView({ block: 'center',  behavior: 'smooth' });
+TimerView.prototype._focus_bar = function(bar) {
+  let element = this.container.children[bar + 1];
+  let screen = this.get_screen_height();
+  let height = this.container.offsetHeight;
+  let center = screen / 2 - element.offsetHeight;
+  let pos = element.offsetTop;
+  let max_scroll = height - screen + 15;
+  let scroll = pos - center;
+  if (scroll < 0 || screen >= height)
+    scroll = 0;
+  else if (scroll > max_scroll)
+    scroll = max_scroll;
+  this.container.style.top = -scroll + "px";
 }
 
 
