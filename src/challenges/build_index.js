@@ -34,7 +34,8 @@ let challenge_index = challenge_files.reduce((acc, filename) => {
       throw new Error("Property 'difficulty' must be a integer value.");
     }
 
-    acc.push({ name: key, title: object.title, difficulty: object.difficulty });
+    acc.push({ name: key, title: object.title, difficulty: object.difficulty,
+               levels: object.levels.length });
 
   } catch (e) {
     console.error(`Error: ${filename}: ${e.message}`);

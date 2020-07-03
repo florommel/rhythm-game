@@ -1,41 +1,89 @@
 .menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
     transition-duration: 500ms;
+
+    .menu-challenges {
+        max-width: $min-l-width;
+        padding: $big-space / 2;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        align-items: flex-start;
+    }
 
     .menu-title {
         font-size: 30px;
         text-shadow: 0px 2px 0px #bef1ff;
         font-style: italic;
+        margin: $big-space $big-space 0 $big-space;
+
+        @media (min-width: $min-m-width) {
+            font-size: 34px;
+            margin: $big-space + 10px $big-space 10px $big-space;
+        }
 
         @media (min-width: $min-l-width) {
-            font-size: 36px;
+            font-size: 38px;
+            margin: $big-space + 10px $big-space 10px $big-space;
         }
     }
 
     %menu-tile {
         display: block;
         border-radius: 5px;
-        padding: 10px;
-        transition-duration: 300ms;
+        padding: 10px 15px;
+        transition: box-shadow 300ms;
         text-decoration: none;
         background-color: rgba(0, 0, 0, 0.05);
         border-bottom: 3px solid rgba(0, 0, 0, 0.15);
         color: rgba(0, 0, 0, 0.3);
-    }
-
-    .menu-item {
-        @extend %menu-tile;
-        text-align: center;
-        &:hover {
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
+        flex: 0 0 auto;
+        box-sizing: border-box;
     }
 
     .menu-challenge-entry {
         @extend %menu-tile;
         height: 110px;
-        font-size: 20px;
+        margin: $big-space / 2;
+        width: calc(100% - #{$big-space});
         &:hover {
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: $min-m-width) {
+            width: calc(50% - #{$big-space});
+        }
+        @media (min-width: $min-l-width) {
+            width: calc(33.333% - #{$big-space});
+        }
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    .menu-challenge-title {
+        font-size: 22px;
+    }
+
+    .menu-challenge-info {
+        font-size: 16px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .menu-challenge-difficulty {
+            font-size: 22px;
         }
     }
 }
@@ -91,6 +139,7 @@
             padding: 0;
             border: 0;
             background: none;
+            cursor: pointer;
 
             &::-moz-focus-inner {
                 border: 0;
