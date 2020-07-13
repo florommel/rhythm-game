@@ -80,6 +80,8 @@ function Timing(rhythm, bpm, offset) {
     case 'p':
       t += Timing.decode_note_value(note) * whole_interval;
       break;
+    case '&':
+      break;
     default:
       throw new Error("Invalid note or rest: " + note);
     }

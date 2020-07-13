@@ -22,6 +22,7 @@ function TimerView() {
   this.note_highlight_index = 0;
   this.metronome_intro_elements = [];
   this.metronome_intro_index = 0;
+  this.bar_count = 0;
   this.container = document.createElement("div");
   this.container.setAttribute("class", "timer-view");
   this.get_screen_height = null; // will be set by GameView
@@ -79,7 +80,9 @@ TimerView.prototype.highlight_next_fail = function() {
 
 
 TimerView.prototype._focus_bar = function(bar) {
-  let element = this.container.children[bar + 1];
+  let element = (bar < 0)
+      ? this.container.children[0]
+      : this.container.querySelector(".index" + bar);
   let screen = this.get_screen_height();
   let height = this.container.offsetHeight;
   let center = screen / 2 - element.offsetHeight;
@@ -139,13 +142,23 @@ TimerView.prototype.add_head = function(level_num, title, time_signature) {
 
 // Parameter -type- should be one of 'listen' or 'play'.
 TimerView.prototype._add_rhythm = function(rhythm, type) {
-  rhythm.bars.forEach((notes, i) => this._add_bar(notes, type));
+  let previous = null;
+  rhythm.bars.forEach((notes, i) => previous = this._add_bar(notes, type, previous));
 }
 
 
-TimerView.prototype._add_bar = function(notes, type) {
-  let bar = document.createElement("div");
-  bar.setAttribute("class", "bar");
+TimerView.prototype._add_bar = function(notes, type, previous) {
+  let bar;
+  if (notes[0] == '&') {
+    bar = previous;
+    bar.setAttribute("class", bar.getAttribute("class") + " index" + this.bar_count);
+    TimerView._add_divider(bar);
+
+  } else {
+    bar = document.createElement("div");
+    bar.setAttribute("class", "bar index" + this.bar_count);
+  }
+  this.bar_count++;
 
   let curr_bar_or_group = bar;
   let group_nesting = 0;
@@ -156,8 +169,10 @@ TimerView.prototype._add_bar = function(notes, type) {
 
   for (let i = 0; i < notes.length; i++) {
     let curr = notes[i];
+    if (curr == "&")
+      continue;
     let next = (i+1 < notes.length) ? notes[i+1] : null;
-    let curr_is_note = TimerView._is_note(curr);
+    let curr_is_note = curr.charAt(0) == 'n';
 
     let notation = '';
 
@@ -233,11 +248,7 @@ TimerView.prototype._add_bar = function(notes, type) {
   }
 
   this.container.appendChild(bar);
-}
-
-
-TimerView._is_note = function(note_or_rest) {
-  return note_or_rest.charAt(0) == 'n';
+  return bar;
 }
 
 
@@ -246,6 +257,14 @@ TimerView._add_group = function(bar) {
   group.setAttribute("class", "group");
   bar.appendChild(group);
   return group;
+}
+
+
+TimerView._add_divider = function(bar) {
+  let divider = document.createElement("div");
+  divider.setAttribute("class", "item divider");
+  bar.appendChild(divider);
+  return divider;
 }
 
 

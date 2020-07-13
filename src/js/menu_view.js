@@ -40,7 +40,7 @@ function MenuView(challenge_list) {
     entry_view.setAttribute("href", "#" + entry.name);
     let rezi = 5 - entry.difficulty;
     let fract = (rezi + 1.2 * Math.sqrt(rezi) - 1.8) * 20;
-    entry_view.style.background = `hsla(${fract}, 80%, 55%, 0.5)`;
+    entry_view.style.backgroundColor = `hsla(${fract}, 80%, 55%, 0.5)`;
     entry_view.style.color = `hsla(${fract}, 60%, 25%, 1)`;
     entry_view.style.borderColor = `hsla(${fract}, 70%, 40%, 1)`;
     let title = document.createElement("span");
