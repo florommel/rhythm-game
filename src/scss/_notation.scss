@@ -101,8 +101,17 @@ $notation-bar-margin: $big-space;
         align-content: flex-start;
         align-items: stretch;
         margin: $notation-bar-margin 0;
-        background: url("lin.svg") 0 56% repeat-x;
         padding-left: 8px;
+
+        &::before {
+            left: 0;
+            top: 0;
+            position: absolute;
+            content: "";
+            height: 56%;
+            width: 100%;
+            border-bottom: 1px solid #999;
+        }
 
         .group {
             display: inline-flex;
@@ -123,11 +132,12 @@ $notation-bar-margin: $big-space;
         }
 
         .item {
+            position: relative;
             order: 0;
             flex: 0 1 auto;
             align-self: auto;
             width: 30px;
-            height: auto;
+            height: 100%;
             margin-right: auto;
 
             &:last-child {
@@ -145,9 +155,10 @@ $notation-bar-margin: $big-space;
 
         .divider {
             width: 0;
+            height: auto;
             margin-top: 10px;
             margin-bottom: 20px;
-            border-left: 1px solid rgba(0, 0, 0, 0.4);
+            border-left: 1px solid #999;
         }
 
         .indicator-inner {
