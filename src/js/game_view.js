@@ -113,8 +113,16 @@ GameView.prototype.switch_result_view = function(score, max_score,
   result_view.appendChild(document.createElement("br"));
   result_view.appendChild(continue_text);
   result_view.style.background = `hsla(${fract}, 100%, 50%, 0.4)`;
-  GameView._flip_view(old_timer_view.get_element(), result_view,
-                      finished_callback);
+  let finished = () => {
+    finished_callback();
+    Controller.input.set(() => {
+      Controller.input.clear();
+      // Add small timeout to prevent the tap or click being detected
+      // a second time on the menu (in some browsers)
+      Controller.timeout.add(() => window.location.href = '#', 250);
+    });
+  }
+  GameView._flip_view(old_timer_view.get_element(), result_view, finished);
 }
 
 
@@ -140,7 +148,6 @@ GameView._flip_view = function(old_element, new_element, finished_callback) {
       window.requestAnimationFrame(step);
     } else {
       new_element.style.transform = "none";
-      new_element.style.position = "static";
       new_element.style.zIndex = 0;
       old_element.remove();
     }

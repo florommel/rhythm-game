@@ -44,7 +44,7 @@ function get_router(challenge_index) {
         .appendChild(menu_view.get_element());
 
     } else {
-      Challenge.load(`challenges/${route}.json`).then((challenge) => {
+      Challenge.load(route).then((challenge) => {
         let game_view = new GameView();
         let game = new Game(router, challenge, game_view);
         document.getElementById("rhythm-game")

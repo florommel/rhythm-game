@@ -5,8 +5,14 @@
     {
       "title": "fourths",
       "time_signature": "4/4",
-      "rhythm": "n4 n4 n4 n4",
-      "bpm": 200
+      "rhythm": "n4 n4 n4 n4 | n2 n2 | n4 n4 n2 | n1",
+      "bpm": 100
+    },
+    {
+      "title": "more",
+      "time_signature": "3/4",
+      "rhythm": "n4 n8 n8b n8+ n16b |& n16 n16b p8+ n16 n8 n4 | p2 p8 n8 |& n2 n4 | n8 n8b n2 |& n2 p4",
+      "bpm": 100
     }
   ]
 }

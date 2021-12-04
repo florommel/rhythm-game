@@ -289,7 +289,6 @@ TimerView._add_space = function(bar_or_group, px_width = null) {
 }
 
 
-// Parameter -style- should be one of 'listen' or 'play'.
 TimerView._add_flag_icon = function(bar) {
   let item = document.createElement("span");
   item.setAttribute("class", "flag");

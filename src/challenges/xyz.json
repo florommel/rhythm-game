@@ -4,8 +4,8 @@
   "levels": [
     {
       "title": "fourths",
-      "time_signature": "7/4",
-      "rhythm": "n4 n4 n4 n4 n4 n4 n4",
+      "time_signature": "3/4",
+      "rhythm": "n4 n4 n4 |& n2 n4 | n8 n8b n4 n4 |& n2 n4",
       "bpm": 100
     }
   ]

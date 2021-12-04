@@ -17,7 +17,9 @@
  *
  */
 
-function Challenge(title, levels) {
+function Challenge(name, title, version, levels) {
+  this.name = name;
+  this.version = version;
   this.title = title;
   this.levels = levels;
 }
@@ -31,27 +33,27 @@ function Level(title, rhythm, bpm, max_score) {
 }
 
 
-Challenge.load = function(url) {
+Challenge.load = function(name) {
   return new Promise((resolve, reject) => {
     let request = new XMLHttpRequest();
-    request.open("GET", url, true);
+    request.open("GET", `challenges/${name}.json`, true);
     request.responseType = "json";
     request.onload = () => {
       try {
-        resolve(Challenge.parse(request.response));
+        resolve(Challenge.parse(name, request.response));
       } catch (err) {
         reject(err);
       }
     }
     request.onerror = () => {
-      reject(new Error(`Error while loading '${url}'.`));
+      reject(new Error(`Error while loading '${name}'.`));
     }
     request.send();
   });
 }
 
 
-Challenge.parse = function(plain_challenge_object) {
+Challenge.parse = function(name, plain_challenge_object) {
   if (typeof(plain_challenge_object) != 'object') {
     throw new Error("Challenge object must be of type 'object'.");
   }
@@ -65,9 +67,10 @@ Challenge.parse = function(plain_challenge_object) {
   }
   // TODO optional author[string] and version/revision[number]
   let title = plain_challenge_object.title;
+  let version = plain_challenge_object.version || 1;
   let levels = plain_challenge_object.levels
       .map((plain_level) => Level.parse(plain_level));
-  return new Challenge(title, levels);
+  return new Challenge(name, title, version, levels);
 }
 
 

@@ -3,10 +3,16 @@
   "difficulty": 2,
   "levels": [
     {
-      "title": "fourths",
-      "time_signature": "4/4",
-      "rhythm": "n4 n4 n4 n4",
-      "bpm": 100
+      "title": "Strauss",
+      "time_signature": "3/4",
+      "rhythm": "n4 n4 n4 |& n2 n4 |& n4 p4 n4 |& n4 p4 n4 | n4 n4 n4 |& n2 n4 |& n4 p4 n4 |& n4 p4 n4 | n4 n4 n4 |& n2+ |& p4 n4 n4 |& n2+ |& p4 n4 n4 | n2 n4 |& n2 n4 |& n4 p8 n8 n4 |& p4 p2",
+      "bpm": 130
+    },
+    {
+      "title": "Shostakovich",
+      "time_signature": "3/4",
+      "rhythm": "n2+ |& n2 n4 |& n2+ |& p4 n4 n4 | n4 n4 n4 |& n2 n4 |& n2+ |& n2+ | n2+ |& n2 n4 |& n2+ |& p4 n4 n4 | n4 n4 n4 |& n4 n4 n4 |& n2+ |& n2+ | p4 n4 n4 |& n4 n8 n8b n8 n8b | n4 n8 n8b n8 n8b |& n4 p4 n4 | p4 n4 n4 |& n4 n8 n8b n8 n8b | n4 n8 n8b n8 n8b |& n4 p4 n4 |& n4 p2",
+      "bpm": 140
     }
   ]
 }
