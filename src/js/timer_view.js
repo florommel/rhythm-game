@@ -167,8 +167,8 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
   let group_nesting = 0;
   let triplet_count = 0;
 
-  if (type == "listen")
-    TimerView._add_flag_icon(bar);
+  if (type == "listen" && (!bar || bar != previous))
+    TimerView._add_flag_icon(bar, !previous);
 
   for (let i = 0; i < notes.length; i++) {
     let curr = notes[i];
@@ -292,9 +292,9 @@ TimerView._add_space = function(bar_or_group, px_width = null) {
 }
 
 
-TimerView._add_flag_icon = function(bar) {
+TimerView._add_flag_icon = function(bar, is_first) {
   let item = document.createElement("span");
-  item.setAttribute("class", "flag");
+  item.setAttribute("class", "flag" + ((is_first) ? " first" : ""));
   bar.appendChild(item);
   return item;
 }
