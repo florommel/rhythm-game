@@ -141,6 +141,9 @@ TimerView.prototype.add_head = function(level_num, title, time_signature) {
 
 
 // Parameter -type- should be one of 'listen' or 'play'.
+// The perspective is that of the game:
+// - Listen to the user
+// - Play the rhythm to the user
 TimerView.prototype._add_rhythm = function(rhythm, type) {
   let previous = null;
   rhythm.bars.forEach((notes, i) => previous = this._add_bar(notes, type, previous));
