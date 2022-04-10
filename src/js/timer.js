@@ -228,6 +228,10 @@ Timer.prototype.start = function() {
     }
 
     Controller.input.set(() => listener.knock());
+    // Highlight first flag
+    let flag_time = (schedule.check_timing[0].time - 1) * 1000;
+    Controller.timeout.add(() => this.timer_view.highlight_flag(), flag_time);
+
     metronome_intro_tick();
     play_tick();
     check_enable_tick();

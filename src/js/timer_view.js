@@ -26,6 +26,7 @@ function TimerView() {
   this.container = document.createElement("div");
   this.container.setAttribute("class", "timer-view");
   this.get_screen_height = null; // will be set by GameView
+  this.first_flag = null;
 }
 
 
@@ -76,6 +77,13 @@ TimerView.prototype.highlight_next_fail = function() {
     e.setAttribute("class", e.getAttribute("class") + " note-highlight-fail");
     this.note_highlight_index++;
   }
+}
+
+
+TimerView.prototype.highlight_flag = function() {
+  if (this.first_flag)
+    this.first_flag.setAttribute("class", this.first_flag.getAttribute("class") +
+                                 " highlight");
 }
 
 
@@ -150,6 +158,16 @@ TimerView.prototype._add_rhythm = function(rhythm, type) {
 }
 
 
+TimerView.prototype._add_flag_icon = function(bar, is_first) {
+  let item = document.createElement("span");
+  item.setAttribute("class", "flag" + ((is_first) ? " first" : ""));
+  bar.appendChild(item);
+  if (is_first)
+    this.first_flag = item;
+  return item;
+}
+
+
 TimerView.prototype._add_bar = function(notes, type, previous) {
   let bar;
   if (notes[0] == '&') {
@@ -168,7 +186,7 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
   let triplet_count = 0;
 
   if (type == "listen" && (!bar || bar != previous))
-    TimerView._add_flag_icon(bar, !previous);
+    this._add_flag_icon(bar, !previous);
 
   for (let i = 0; i < notes.length; i++) {
     let curr = notes[i];
@@ -289,12 +307,4 @@ TimerView._add_space = function(bar_or_group, px_width = null) {
   }
   bar_or_group.appendChild(space);
   return space;
-}
-
-
-TimerView._add_flag_icon = function(bar, is_first) {
-  let item = document.createElement("span");
-  item.setAttribute("class", "flag" + ((is_first) ? " first" : ""));
-  bar.appendChild(item);
-  return item;
 }

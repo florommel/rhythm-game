@@ -210,6 +210,18 @@ $notation-bar-margin: $big-space;
             border-style: solid;
             border-color: transparent transparent transparent rgba(0,0,0,0.3);
             border-width: 7px 0 7px 14px;
+            transform: scale(1.0);
+        }
+
+        @keyframes highlight-flag {
+            33% {
+                border-color: transparent transparent transparent #d35300;
+                transform: scale(1.3);
+            }
+        }
+
+        .flag.highlight {
+            animation: highlight-flag 3s linear 0s 1 normal;
         }
     }
 }
