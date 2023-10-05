@@ -200,10 +200,6 @@ footer {
             }
 
             @media (min-width: $min-l-width) {
-                img {
-                    opacity: 0.15;
-                }
-
                 &:hover {
                     img {
                         opacity: 0.45;
@@ -235,9 +231,6 @@ footer {
             align-items: center;
 
             background-color: rgba(0,0,0,0.25);
-            @media (min-width: $min-l-width) {
-                background-color: rgba(0,0,0,0.15);
-            }
 
             .curr-score {
                 text-align: center;
