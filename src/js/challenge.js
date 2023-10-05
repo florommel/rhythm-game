@@ -25,11 +25,12 @@ function Challenge(name, title, version, levels) {
 }
 
 
-function Level(title, rhythm, bpm, max_score) {
+function Level(title, rhythm, bpm, max_score, no_playback) {
   this.title = title;
   this.rhythm = rhythm;
   this.bpm = bpm;
   this.max_score = max_score;
+  this.no_playback = no_playback;
 }
 
 
@@ -97,11 +98,16 @@ Level.parse = function(plain_level_object) {
       throw new Error("Property 'max_score' must be an integer value.");
     }
   }
+  if (!['undefined', 'boolean'].includes(typeof(plain_level_object.no_playback))) {
+    throw new Error("Property 'no_playback' must be a boolean value.");
+  }
+
   let title = plain_level_object.title;
   let bpm = plain_level_object.bpm;
   let time_signature = TimeSignature.parse(plain_level_object.time_signature);
   let rhythm = Rhythm.parse(time_signature, plain_level_object.rhythm);
   let max_score = (plain_level_object.max_score)
       ? plain_level_object.max_score : 5;
-  return new Level(title, rhythm, bpm, max_score);
+  let no_playback = !!plain_level_object.no_playback;
+  return new Level(title, rhythm, bpm, max_score, no_playback);
 }

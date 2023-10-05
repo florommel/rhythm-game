@@ -23,7 +23,10 @@ function Timer(level_number, title, time_signature, bpm, timer_view) {
   this.timer_view = timer_view;
   this.finished_callback = Function.prototype;  // NOP
   this.failed_callback = Function.prototype;  // NOP
+  this.skipped_callback = Function.prototype;  // NOP
+  this.skippable_callback = Function.prototype;  // NOP
   this.queue = [];
+  this._skippable = false;
 
   this.timer_view.add_head(level_number, title, this.time_signature);
 }
@@ -41,6 +44,16 @@ Timer.prototype.set_finished_callback = function(handler) {
 
 Timer.prototype.set_failed_callback = function(handler) {
   this.failed_callback = handler;
+}
+
+
+Timer.prototype.set_skipped_callback = function(handler) {
+  this.skipped_callback = handler;
+}
+
+
+Timer.prototype.set_skippable_callback = function(handler) {
+  this.skippable_callback = handler;
 }
 
 
@@ -118,6 +131,12 @@ Timer.prototype.get_schedule = function(initial_time_offset) {
 }
 
 
+Timer.prototype._set_skippable = function(value) {
+  this._skippable = value;
+  this.skippable_callback(value);
+}
+
+
 Timer.prototype.start = function() {
   Controller.sound.get().then((sound) => {
     sound.suspend();
@@ -142,6 +161,17 @@ Timer.prototype.start = function() {
 
     let listener = new CheckListener(schedule.check_timing, fail,
                                      this.timer_view, sound);
+
+    let skip = () => {
+      if (!this._skippable)
+        return;
+      Controller.input.clear();
+      Controller.timeout.clear();
+      Controller.timeout.add(() => {
+        sound.close();
+        this.skipped_callback();
+      }, Timer.big_delay * 1000);
+    }
 
     // Metronome ticks
     let beat_countdown = 0;
@@ -197,6 +227,7 @@ Timer.prototype.start = function() {
         let val = schedule.check_enable_timing[check_enable_tick_index]
             .checking_enabled;
         listener.set_checking_enabled(val);
+        this._set_skippable(!val);
         if (listener.is_failed()) {
           fail();
           return;
@@ -227,17 +258,20 @@ Timer.prototype.start = function() {
       }
     }
 
-    Controller.input.set(() => listener.knock());
     // Highlight first flag
     let flag_time = (schedule.check_timing[0].time - 1) * 1000;
     Controller.timeout.add(() => this.timer_view.highlight_flag(), flag_time);
 
+    Controller.input.set(() => listener.knock(), skip);
     metronome_intro_tick();
     play_tick();
     check_enable_tick();
     check_tick();
 
     sound.resume();
+
+    // Make only skippable when the first queue element is playback
+    this._set_skippable(this.queue.length > 0 && this.queue[0].type == 1);
 
     Controller.timeout.add(() => {
       Controller.clear_all();

@@ -35,6 +35,8 @@ function GameView() {
   this.score_div = document.createElement("div");
   this.score_div.setAttribute("class", "curr-score");
 
+  this.skip_button = null;
+
   this.container.appendChild(this.game_menu);
   this.container.appendChild(this.game_view);
 }
@@ -45,8 +47,8 @@ GameView.prototype.get_element = function() {
 }
 
 
-GameView.prototype.switch_timer_view = function(new_timer_view,
-                                                successful,
+// `mode` is either 'start', 'success', 'fail' or 'skip'.
+GameView.prototype.switch_timer_view = function(new_timer_view, mode,
                                                 finished_callback) {
   let old_timer_view = null;
   if (this.timer_view_container) {
@@ -69,14 +71,21 @@ GameView.prototype.switch_timer_view = function(new_timer_view,
     finished_callback();
   };
 
-  if (old_element) {
-    if (successful) {
-      GameView._flip_view(old_element, new_element, finish);
-    } else {
-      GameView._shake_view(old_element, new_element, finish)
-    }
-  } else {
+  console.assert(old_element || mode === "start",
+                 "old_element not set and mode is not 'start'");
+  switch (mode) {
+  case "start":
     GameView._intro_view(this.timer_view_container, new_element, finish);
+    break;
+  case "success":
+    GameView._flip_view(old_element, new_element, finish);
+    break;
+  case "fail":
+    GameView._shake_view(old_element, new_element, finish);
+    break;
+  case "skip":
+    GameView._fade_view(old_element, new_element, finish);
+    break;
   }
 }
 
@@ -120,8 +129,8 @@ GameView.prototype.switch_result_view = function(score, max_score,
       // Add small timeout to prevent the tap or click being detected
       // a second time on the menu (in some browsers)
       Controller.timeout.add(() => window.location.href = '#', 250);
-    });
-  }
+    }, null);
+  };
   GameView._flip_view(old_timer_view.get_element(), result_view, finished);
 }
 
@@ -158,6 +167,37 @@ GameView._flip_view = function(old_element, new_element, finished_callback) {
 }
 
 
+GameView._fade_view = function(old_element, new_element, finished_callback) {
+  let duration = 300;
+  old_element.parentElement.appendChild(new_element);
+  old_element.style.opacity = 1;
+  new_element.style.opacity = 0;
+  old_element.style.position = "absolute";
+  new_element.style.position = "absolute";
+  new_element.style.zIndex = 1;
+
+  let start = null;
+  let step = (timestamp) => {
+    if (!start)
+      start = timestamp;
+    let progress = timestamp - start;
+    if (progress < duration) {
+      let step_frac = progress / duration;
+      old_element.style.opacity = 1 - step_frac;
+      new_element.style.opacity = 0 + step_frac;
+      window.requestAnimationFrame(step);
+    } else {
+      new_element.style.transform = "none";
+      new_element.style.zIndex = 0;
+      old_element.remove();
+    }
+  }
+
+  window.requestAnimationFrame(step);
+  Controller.timeout.add(finished_callback, duration + 50);
+}
+
+
 GameView._shake_view = function(old_element, new_element, finished_callback) {
   let duration = 800;
   let start = null;
@@ -171,10 +211,8 @@ GameView._shake_view = function(old_element, new_element, finished_callback) {
       old_element.style.transform = `rotate(${step_deg}deg)`;
       window.requestAnimationFrame(step);
     } else {
-      old_element.style.transform = "none";
-      old_element.parentElement.appendChild(new_element);
-      new_element.style.top = old_element.style.top;
-      old_element.remove();
+      old_element.style.transform = "rotate(0)";
+      GameView._fade_view(old_element, new_element, Function.prototype);
     }
   }
 
@@ -213,7 +251,7 @@ GameView._intro_view = function(container, new_element, finished_callback) {
 }
 
 
-GameView.prototype.create_game_menu = function(max_game_score, restart) {
+GameView.prototype.create_game_menu = function(max_game_score, restart, skip) {
   let back_text = "Back to main menu";
   let back_button = document.createElement("a");
   let back_image = document.createElement("img");
@@ -240,6 +278,18 @@ GameView.prototype.create_game_menu = function(max_game_score, restart) {
   score_container.appendChild(this.score_div);
   this.game_menu.appendChild(score_container);
 
+  let skip_text = "Skip demo play";
+  this.skip_button = document.createElement("button");
+  let skip_image = document.createElement("img");
+  skip_image.setAttribute("src", "skip.svg");
+  skip_image.setAttribute("alt", skip_text);
+  this.skip_button.appendChild(skip_image);
+  this.skip_button.setAttribute("title", skip_text);
+  this.skip_button.addEventListener("click", skip);
+  this.skip_button.style.transitionDuration = "200ms";  // FIXME
+  this.skip_button.classList.add("disabled");
+  this.game_menu.appendChild(this.skip_button);
+
   this.game_menu.style.opacity = 0;
   // see transition in _view.scss
   Controller.timeout.add(() => {
@@ -256,6 +306,21 @@ GameView.prototype.update_score = function(new_score) {
     this.score_div.style.opacity = 0;
     this.score_div.style.transition = "none";
     Controller.timeout.add(() => this.score_div.removeAttribute("style"), 100);
+  }
+}
+
+
+GameView.prototype.set_skip_button_visible = function(value) {
+  if (this.skip_button) {
+    if (value) {
+      this.skip_button.classList.remove("disabled-on-l");
+      this.skip_button.classList.remove("hidden");
+    } else {
+      this.skip_button.classList.add("hidden");
+      Controller.timeout.add(() => {
+        this.skip_button.classList.add("disabled-on-l");
+      }, 250);
+    }
   }
 }
 
@@ -293,7 +358,7 @@ GameView.prototype.show_modal = function(mode, callback) {
     modal.style.transform = "scale(2) translate(-25%, -25%)";
     Controller.timeout.add(() => modal.remove(), 1000);
   };
-  Controller.input.set(handler);
+  Controller.input.set(handler, null);
   Controller.timeout.add(() => modal.removeAttribute("style"));
 }
 

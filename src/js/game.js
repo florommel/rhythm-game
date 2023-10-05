@@ -32,22 +32,26 @@ function Game(router, challenge, game_view) {
 
 
 Game.prototype.run = function() {
-  // `mode` is either 'start', 'success' or 'fail'.
+  // `mode` is either 'start', 'success', 'fail' or 'skip'.
   // It determines the level start message that is presented to the user.
-  let start_level = (mode) => {
+  let start_level = (mode, user_skip) => {
     let timer_view = new TimerView();
     let level = this.challenge.levels[this.current_level_number-1];
+    let skip_play = user_skip || level.no_playback;
 
-    if (mode == 'start' || mode == 'success') {
+    if (mode == "start" || mode == "success") {
       this.current_level_score = level.max_score;
-    } else if (mode == 'fail' && this.current_level_score > 0) {
+    } else if (mode == "fail" && this.current_level_score > 0) {
       this.current_level_score--;
     }
 
     let timer = new Timer(this.current_level_number, level.title,
                           level.rhythm.time_signature, level.bpm, timer_view);
     timer.set_failed_callback(() => {
-      start_level("fail");
+      start_level("fail", user_skip);
+    });
+    timer.set_skipped_callback(() => {
+      start_level("skip", true);
     });
     timer.set_finished_callback(() => {
       this.score += this.current_level_score;
@@ -60,26 +64,31 @@ Game.prototype.run = function() {
           Store.set_challenge(this.challenge.name, this.score, this.max_score,
                               this.challenge.version);
       } else {
-        start_level("success");
+        start_level("success", false);
       }
     });
+    timer.set_skippable_callback((value) => {
+      this.game_view.set_skip_button_visible(value);
+    });
 
-    // TODO: Rhythms shouldn't be always played.  More advanced levels could be
-    //       without playing the rhythm before listening to it.
-    timer.queue_play(level.rhythm);
+    if (!skip_play)
+      timer.queue_play(level.rhythm);
     timer.queue_listen(level.rhythm);
 
-    this.game_view.switch_timer_view(timer_view, mode != "fail", () => {
-      this.game_view.show_modal(mode, () => {
+    this.game_view.switch_timer_view(timer_view, mode, () => {
+      if (mode == "skip")
         timer.start();
-      });
+      else
+        this.game_view.show_modal(mode, () => timer.start());
     });
   };
 
 
   this.current_level_number = 1;
-  this.game_view.create_game_menu(this.max_score, () => this.restart());
-  start_level("start");
+  this.game_view.create_game_menu(this.max_score,
+                                  () => this.restart(),
+                                  () => Controller.input.skip());
+  start_level("start", false);
 };
 
 

@@ -33,19 +33,25 @@ Controller.clear_all = function() {
 Controller.input = {
   _current: {
     keydown: null,
-    touch: null
-  }
+    touch: null,
+    touch_skip: null,
+  },
+  skip: Function.prototype,
 };
 
-Controller.input.set = function(handler) {
+Controller.input.set = function(knock_handler, skip_handler) {
   this.clear();
   this._current.keydown = (event) => {
     if (event.key == " " || event.key == "Enter")
-      handler();
+      knock_handler && knock_handler();
+    else if (event.key == "Backspace" || event.key == "Delete") {
+      skip_handler && skip_handler();
+    }
   };
-  this._current.touch = handler;
+  this._current.touch = knock_handler;
   window.addEventListener("keydown", this._current.keydown);
   window.addEventListener("touchstart", this._current.touch);
+  Controller.input.skip = skip_handler;
 };
 
 Controller.input.clear = function() {
@@ -53,6 +59,7 @@ Controller.input.clear = function() {
     window.removeEventListener("keydown", this._current.keydown);
   if (this._current.touch)
     window.removeEventListener("touchstart", this._current.touch);
+  Controller.input.skip = Function.prototype;
 };
 
 
