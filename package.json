@@ -24,7 +24,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "node-sass": "^6.0.0",
+    "node-sass": "^9.0.0",
     "onchange": "^7.1.0",
     "parallelshell": "^3.0.2",
     "xmldom": "^0.6.0"
