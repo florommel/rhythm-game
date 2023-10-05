@@ -61,6 +61,12 @@ function MenuView(challenge_list) {
     info.appendChild(difficulty);
     this.challenge_list_view.appendChild(entry_view);
   }
+
+  if (CONF_FOOTER_HTML) {
+    let footer = document.createElement("footer");
+    this.container.appendChild(footer);
+    footer.innerHTML = CONF_FOOTER_HTML;
+  }
 }
 
 
