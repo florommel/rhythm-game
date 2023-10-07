@@ -6,7 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 let challenge_files = fs.readdirSync(__dirname)
-    .filter((name) => name.endsWith('.json'));
+  .filter((name) => name.endsWith('.json'))
+  .sort((a, b) => a.localeCompare(b));
 
 let challenge_index = challenge_files.reduce((acc, filename) => {
   let key = filename.substring(0, filename.length-5);

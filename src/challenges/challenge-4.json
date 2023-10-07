@@ -1,0 +1,42 @@
+{
+  "title": "Challenge 4",
+  "difficulty": 2,
+  "levels": [
+    {
+      "title": "three-four time",
+      "time_signature": "3/4",
+      "rhythm": "n4 n4 n4 |& n2 n4 | n8 n8b n4 n4 |& n2 n4",
+      "bpm": 120
+    },
+    {
+      "title": "three-four time 2",
+      "time_signature": "3/4",
+      "rhythm": "n4+ n8 n4 |& n2+ | n8+ n16b n4 n4 |& n2+",
+      "bpm": 120
+    },
+    {
+      "title": "rest",
+      "time_signature": "4/4",
+      "rhythm": "n4 n4 p4+ n8 |& n2 n4 n4 | n4 n4 n8 n8b p4 |& n2 n4 n4",
+      "bpm": 100
+    },
+    {
+      "title": "two-four time",
+      "time_signature": "2/4",
+      "rhythm": "p4+ n8 |& n4 n4 | n8 n8b n4 |& n8 n8b n8 n8b",
+      "bpm": 110
+    },
+    {
+      "title": "dotted",
+      "time_signature": "4/4",
+      "rhythm": "n4+ n8 n4+ n8 |& n8 n8b n4+ n8 n4 | n8 n8b n4+ n8 |& n8 n8b n8b n8b n2",
+      "bpm": 100
+    },
+    {
+      "title": "triplets",
+      "time_signature": "4/4",
+      "rhythm": "n4+ n8 n4+ n8 |& n8+ n16b n8 n8b n2 | n2+ n4 |& n8 n8b n12 n12b n12b n4 n4",
+      "bpm": 120
+    }
+  ]
+}
