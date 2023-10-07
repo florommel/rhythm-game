@@ -58,11 +58,12 @@ Game.prototype.run = function() {
       this.game_view.update_score(this.score);
       if (++this.current_level_number > this.challenge.levels.length) {
         this.game_view.switch_result_view(this.score, this.max_score,
-                                          this.finished_callback);
-        let prev_store = Store.get_challenge(this.challenge.name);
-        if (prev_store == null || prev_store.score < this.score)
-          Store.set_challenge(this.challenge.name, this.score, this.max_score,
-                              this.challenge.version);
+          this.finished_callback);
+        // FIXME: disabled for now
+        // let prev_store = Store.get_challenge(this.challenge.name);
+        // if (prev_store == null || prev_store.score < this.score)
+        //   Store.set_challenge(this.challenge.name, this.score, this.max_score,
+        //                       this.challenge.version);
       } else {
         start_level("success", false);
       }
