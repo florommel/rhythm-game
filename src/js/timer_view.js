@@ -168,6 +168,21 @@ TimerView.prototype._add_flag_icon = function(bar, is_first) {
 }
 
 
+TimerView.prototype._add_play_note = function(bar, type, notes) {
+  // FIXME: dirty!
+  // If the first note is a triplet, we need the text to be higher.
+  let add_class = (notes[0].substr(1, 2) == "12") ? " higher" : "";
+
+  // Confusingly type='listen' and text='Listen:' is flipped.
+  // One is from the perspective of the game, the other from the user.
+  let text = (type == "listen") ? "Your turn:" : "Listen:";
+  let turn = document.createElement("span");
+  turn.setAttribute("class", "play-note" + add_class);
+  turn.appendChild(document.createTextNode(text));
+  bar.appendChild(turn);
+}
+
+
 TimerView.prototype._add_bar = function(notes, type, previous) {
   let bar;
   if (notes[0] == '&') {
@@ -187,6 +202,9 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
 
   if (type == "listen" && (!bar || bar != previous))
     this._add_flag_icon(bar, !previous);
+
+  if (!previous)
+    this._add_play_note(bar, type, notes);
 
   for (let i = 0; i < notes.length; i++) {
     let curr = notes[i];
