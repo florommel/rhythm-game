@@ -136,7 +136,15 @@ Timer.prototype._set_skippable = function(value) {
   this.skippable_callback(value);
 }
 
-
+// Rough overview:
+// - Get the level schedule and initialize input and listener
+// - Schedule all metronome sounds in advance (sound.play_m1 & sound.paly_m2)
+// - Schedule all playback sounds in advance (sound.play_r)
+// - metronome_intro_tick, play_tick, check_enable_tick, and check_tick
+//   are closures that schedule themselves again as needed.
+//   Since the non-user-input sounds are already scheduled, these functions
+//   control the logic and the display (timer_view callbacks)
+// TODO: This is a mess. Transform this into dedicated state machines.
 Timer.prototype.start = function() {
   Controller.sound.get().then((sound) => {
     sound.suspend();
@@ -271,7 +279,8 @@ Timer.prototype.start = function() {
     sound.resume();
 
     // Make only skippable when the first queue element is playback
-    this._set_skippable(this.queue.length > 0 && this.queue[0].type == 1);
+    let has_playback = this.queue[0].type == 1;
+    this._set_skippable(has_playback);
 
     Controller.timeout.add(() => {
       Controller.clear_all();

@@ -158,6 +158,7 @@ GameView._flip_view = function(old_element, new_element, finished_callback) {
     } else {
       new_element.style.transform = "none";
       new_element.style.zIndex = 0;
+      new_element.style.opacity = 1;
       old_element.remove();
     }
   }
@@ -189,6 +190,7 @@ GameView._fade_view = function(old_element, new_element, finished_callback) {
     } else {
       new_element.style.transform = "none";
       new_element.style.zIndex = 0;
+      new_element.style.opacity = 1;
       old_element.remove();
     }
   }
@@ -243,6 +245,7 @@ GameView._intro_view = function(container, new_element, finished_callback) {
       window.requestAnimationFrame(step);
     } else {
       new_element.style.transform = "none";
+      new_element.style.opacity = 1;
     }
   }
 
@@ -313,19 +316,17 @@ GameView.prototype.update_score = function(new_score) {
 GameView.prototype.set_skip_button_visible = function(value) {
   if (this.skip_button) {
     if (value) {
-      this.skip_button.classList.remove("disabled-on-l");
-      this.skip_button.classList.remove("hidden");
+      Controller.timeout.add(() => {
+        this.skip_button.classList.remove("hidden");
+      }, 100);
     } else {
       this.skip_button.classList.add("hidden");
-      Controller.timeout.add(() => {
-        this.skip_button.classList.add("disabled-on-l");
-      }, 250);
     }
   }
 }
 
 
-// `mode` either 'start', 'success' or 'fail'.
+// `mode` is either 'start', 'success' or 'fail'.
 GameView.prototype.show_modal = function(mode, callback) {
   let main_text = null;
   switch (mode) {
@@ -351,15 +352,18 @@ GameView.prototype.show_modal = function(mode, callback) {
   modal.appendChild(continue_div);
   this.game_view.appendChild(modal);
 
-  let handler = () => {
-    Controller.input.clear();
-    callback();
-    modal.style.opacity = 0;
-    modal.style.transform = "scale(2) translate(-25%, -25%)";
-    Controller.timeout.add(() => modal.remove(), 1000);
-  };
-  Controller.input.set(handler, null);
-  Controller.timeout.add(() => modal.removeAttribute("style"));
+  Controller.timeout.add(() => {
+    modal.removeAttribute("style");
+
+    let handler = () => {
+      Controller.input.clear();
+      callback();
+      modal.style.opacity = 0;
+      modal.style.transform = "scale(2) translate(-25%, -25%)";
+      Controller.timeout.add(() => modal.remove(), 1000);
+    };
+    Controller.input.set(handler, null);
+  }, 20);
 }
 
 

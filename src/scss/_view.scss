@@ -180,39 +180,21 @@ footer {
             }
             &:hover {
                 img {
-                    opacity: 0.35;
+                    opacity: 0.45;
                 }
             }
             &.hidden {
                 img {
                     opacity: 0.08;
+                    transition: opacity 1200ms;
                 }
-            }
-            &.disabled-on-l {
-                display: initial;
             }
 
             img {
                 width: 100%;
                 height: auto;
                 opacity: 0.25;
-                transition: opacity 200ms;
-            }
-
-            @media (min-width: $min-l-width) {
-                &:hover {
-                    img {
-                        opacity: 0.45;
-                    }
-                }
-                &.hidden {
-                    img {
-                        opacity: 0;
-                    }
-                }
-                &.disabled-on-l {
-                    display: none;
-                }
+                transition: opacity 300ms;
             }
         }
 
