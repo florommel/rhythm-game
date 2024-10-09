@@ -7,7 +7,10 @@ html {
 body {
     height: 100%;
     margin: 0;
-    font-family: "Droid Serif", "DejaVu Serif", "Bitstream Vera Serif", "Georgia", serif;
+    font-family: "Noto Serif", "DejaVu Serif", "Bitstream Vera Serif", "Georgia", serif;
+    -moz-font-feature-settings: "lnum";
+    -webkit-font-feature-settings: "lnum";
+    font-feature-settings: "lnum";
 }
 
 #rhythm-game {
