@@ -2,31 +2,11 @@
   "name": "a-rhythm-game",
   "version": "1.0.0",
   "description": "A Rhythm Game",
-  "scripts": {
-    "build:html": "mkdir -p dist && cp -f src/index.html -t dist/",
-    "build:challenges": "mkdir -p dist && node src/challenges/build_index.js > dist/challenge_index.json && mkdir -p dist/challenges && cp -f src/challenges/*.json -t dist/challenges/",
-    "build:js": "babel src/js --no-comments | cat src/license-header.txt - > dist/script.js",
-    "build:notation": "node src/notation/build.js | cat src/license-header.txt - > dist/notation.js",
-    "build:scss": "node-sass --quiet --output-style compressed -o dist src/scss/",
-    "build:media": "mkdir -p dist && cp -f src/media/* -t dist/",
-    "build:copying": "mkdir -p dist && cp -f COPYING -t dist/",
-    "build": "npm run build:html && npm run build:challenges && npm run build:js && npm run build:notation && npm run build:scss && npm run build:media && npm run build:copying",
-    "clean": "rm -rf dist",
-    "watch:html": "onchange 'src/index.html' -- npm run build:html",
-    "watch:challenges": "onchange 'src/challenges/*.json' -- npm run build:challenges",
-    "watch:js": "onchange 'src/js/*.js' -- npm run build:js",
-    "watch:notation": "onchange 'src/notation/notation.js' -- npm run build:notation",
-    "watch:scss": "onchange 'src/scss/*.scss' -- npm run build:scss",
-    "watch:media": "onchange 'src/media/*' -- npm run build:media",
-    "watch": "parallelshell \"npm run watch:html\" \"npm run watch:challenges\" \"npm run watch:js\" \"npm run watch:notation\" \"npm run watch:scss\" \"npm run watch:media\""
-  },
   "author": "Florian Rommel",
   "license": "GPL-3.0",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "node-sass": "^9.0.0",
-    "onchange": "^7.1.0",
-    "parallelshell": "^3.0.2",
     "xmldom": "^0.6.0"
   }
 }
