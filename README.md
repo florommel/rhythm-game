@@ -3,7 +3,7 @@
 Test your rhythmic skills! Follow the notes displayed on the screen
 and replicate the rhythm by tapping on your touch device or keyboard.
 
-Play it: https:/florommel.de/rhythm
+Play it: https://florommel.de/rhythm
 
 
 ## Build and run it yourself
