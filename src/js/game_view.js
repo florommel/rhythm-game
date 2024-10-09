@@ -124,12 +124,12 @@ GameView.prototype.switch_result_view = function(score, max_score,
   result_view.style.background = `hsla(${fract}, 100%, 50%, 0.4)`;
   let finished = () => {
     finished_callback();
-    Controller.input.set(() => {
+    Controller.input.set_user_action(() => {
       Controller.input.clear();
       // Add small timeout to prevent the tap or click being detected
       // a second time on the menu (in some browsers)
       Controller.timeout.add(() => window.location.href = '#', 250);
-    }, null);
+    });
   };
   GameView._flip_view(old_timer_view.get_element(), result_view, finished);
 }
@@ -362,7 +362,7 @@ GameView.prototype.show_modal = function(mode, callback) {
       modal.style.transform = "scale(2) translate(-25%, -25%)";
       Controller.timeout.add(() => modal.remove(), 1000);
     };
-    Controller.input.set(handler, null);
+    Controller.input.set_user_action(handler);
   }, 20);
 }
 

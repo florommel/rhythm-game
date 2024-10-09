@@ -33,8 +33,8 @@ Controller.clear_all = function() {
 Controller.input = {
   _current: {
     keydown: null,
-    touch: null,
-    touch_skip: null,
+    touchstart: null,
+    touchend: null,
   },
   skip: Function.prototype,
 };
@@ -44,21 +44,41 @@ Controller.input.set = function(knock_handler, skip_handler) {
   this._current.keydown = (event) => {
     if (event.key == " " || event.key == "Enter")
       knock_handler && knock_handler();
-    else if (event.key == "Backspace" || event.key == "Delete") {
+    else if (event.key == "Backspace" || event.key == "Delete")
       skip_handler && skip_handler();
-    }
   };
-  this._current.touch = knock_handler;
+  this._current.touchstart = knock_handler;
   window.addEventListener("keydown", this._current.keydown);
-  window.addEventListener("touchstart", this._current.touch);
-  Controller.input.skip = skip_handler;
+  window.addEventListener("touchstart", this._current.touchstart);
+  Controller.input.skip = skip_handler || Function.prototype;
+};
+
+// Use this for modal dialogs.
+// Modal dialogs call .sound.get() and <s>.resume(), which in turn create/resume
+// an AudioContext. These functions are only allowed to be executed by an
+// "activation triggering input event".
+// "touchstart" does not qualify as an "activation triggering input event",
+// but "touchend" does ("keydown" also).
+// see https://html.spec.whatwg.org/multipage/interaction.html#activation-triggering-input-event
+Controller.input.set_user_action = function(handler) {
+  this.clear();
+  this._current.keydown = (event) => {
+    if (event.key == " " || event.key == "Enter")
+      handler && handler();
+  };
+  this._current.touchend = handler;
+  window.addEventListener("keydown", this._current.keydown);
+  window.addEventListener("touchend", this._current.touchend);
+  Controller.input.skip = Function.prototype;
 };
 
 Controller.input.clear = function() {
   if (this._current.keydown)
     window.removeEventListener("keydown", this._current.keydown);
-  if (this._current.touch)
-    window.removeEventListener("touchstart", this._current.touch);
+  if (this._current.touchstart)
+    window.removeEventListener("touchstart", this._current.touchstart);
+  if (this._current.touchend)
+    window.removeEventListener("touchend", this._current.touchend);
   Controller.input.skip = Function.prototype;
 };
 
