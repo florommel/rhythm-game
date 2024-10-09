@@ -206,6 +206,7 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
   if (!previous)
     this._add_play_note(bar, type, notes);
 
+  let next_n16_cs = false;
   for (let i = 0; i < notes.length; i++) {
     let curr = notes[i];
     if (curr == "&")
@@ -219,10 +220,13 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
       notation += Notation.indicator;
     }
 
+    let has_dot = false;
+
     // handle beamed notes (n8, n8+, n16, n16+, n12, n24) and dotted notes (+)
     let beam_suffix = '';
     if (curr.endsWith('b')) {
       if (curr.endsWith('+')) {
+        has_dot = true;
         curr = curr.substring(0, curr.length-2);
         notation += Notation.dot;
       } else {
@@ -236,6 +240,7 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
       }
     } else {
       if (curr.endsWith('+')) {
+        has_dot = true;
         curr = curr.substring(0, curr.length-1);
         notation += Notation.dot;
       }
@@ -248,8 +253,9 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
       }
     }
 
-    // triplets
     let val = Number(curr.substring(1));
+
+    // triplets
     if (val % 3 == 0) {
       triplet_count++;
       switch (triplet_count) {
@@ -270,6 +276,15 @@ TimerView.prototype._add_bar = function(notes, type, previous) {
         break;
       }
       curr = curr.charAt(0) + 2/3 * val;
+    }
+
+    // potentially use special n16_cs after dotted eight
+    if (val == 8 && has_dot) {
+      next_n16_cs = true;
+    }
+    if (next_n16_cs && val == 16 && beam_suffix == "_c") {
+      beam_suffix = "_cs";
+      next_n16_cs = false;
     }
 
     // main note or rest character
